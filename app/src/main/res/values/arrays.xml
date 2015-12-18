@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_filter_values">
+        <item>highest-rated</item>
+        <item>popularity</item>
+    </string-array>
+
+    <string-array name="pref_filter_options">
+        <item>highest-rated</item>
+        <item>popularity</item>
+    </string-array>
+</resources>
