@@ -9,6 +9,9 @@
     <string name="pref_filter_label">Filter</string>
     <string name="pref_filter_default" translatable="false">highest-rated</string>
 
+    <string name="pref_favorite_movies_key" translatable="false">favoritemovies</string>
+    <string name="favorites_movies">Favorites Movies</string>
+
     <string name="MovieReviews">Reviews:</string>
     <string name="MovieVideos">Videos:</string>
 

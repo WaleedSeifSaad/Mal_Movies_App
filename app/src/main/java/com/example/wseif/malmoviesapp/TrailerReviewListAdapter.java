@@ -97,3 +97,7 @@ public class TrailerReviewListAdapter extends BaseAdapter {
         public TrailerReviewEnum trailerReviewEnum;
     }
 }
+
+enum TrailerReviewEnum {
+    TRAILER_ENUM, REVIEW_ENUM
+}

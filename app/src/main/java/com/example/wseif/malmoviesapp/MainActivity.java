@@ -10,6 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -21,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //clearFavoriteMovies();
         movieListAdapter = new MovieListAdapter(getApplicationContext());
 
         GridView gridView = (GridView)findViewById(R.id.gridview);
@@ -65,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
+        if (id == R.id.favorites_settings) {
+            loadFavoritesMovies();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -86,6 +94,24 @@ public class MainActivity extends AppCompatActivity {
         return buildUri.toString();
     }
 
+    private void loadFavoritesMovies() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String favoriteMoviesJson = prefs.getString(getString(R.string.pref_favorite_movies_key), null);
+        Type type = new TypeToken<List<Movie>>() {
+        }.getType();
+        ArrayList<Movie> favoriteMoviesList = new Gson().fromJson(favoriteMoviesJson, type);
+        movieListAdapter.clear();
+        if (favoriteMoviesList != null && favoriteMoviesList.size() > 0) {
+            for (Movie movie : favoriteMoviesList) {
+                movieListAdapter.add(movie);
+            }
+        }
+    }
 
-
+    private void clearFavoriteMovies() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(getString(R.string.pref_favorite_movies_key), null);
+        editor.commit();
+    }
 }
