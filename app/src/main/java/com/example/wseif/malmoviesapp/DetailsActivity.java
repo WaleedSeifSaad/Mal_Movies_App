@@ -1,35 +1,119 @@
 package com.example.wseif.malmoviesapp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 public class DetailsActivity extends AppCompatActivity {
+
+    TrailerReviewListAdapter trailerReviewListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Movie movie = (Movie)getIntent().getSerializableExtra("Movie");
+        trailerReviewListAdapter = new TrailerReviewListAdapter(getApplicationContext());
 
-        TextView textViewMovieOriginalTitle = (TextView)findViewById(R.id.textViewMovieOriginalTitle);
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View headerView = layoutInflater.inflate(R.layout.activity_details_header, null);
+
+
+        TextView textViewMovieOriginalTitle = (TextView) headerView.findViewById(R.id.textViewMovieOriginalTitle);
         textViewMovieOriginalTitle.setText(movie.getOriginalTitle());
 
-        ImageView movieImage = (ImageView)findViewById(R.id.movieImage);
+        ImageView movieImage = (ImageView) headerView.findViewById(R.id.movieImage);
         Picasso.with(getApplicationContext()).load(movie.getPosterPath()).into(movieImage);
 
-        TextView textViewMovieOverview = (TextView)findViewById(R.id.textViewMovieOverview);
+        TextView textViewMovieOverview = (TextView) headerView.findViewById(R.id.textViewMovieOverview);
         textViewMovieOverview.setText(movie.getOverview());
 
-        TextView textViewMovieVoteAverage = (TextView)findViewById(R.id.textViewMovieVoteAverage);
+        TextView textViewMovieVoteAverage = (TextView) headerView.findViewById(R.id.textViewMovieVoteAverage);
         textViewMovieVoteAverage.setText(movie.getVoteAverage().toString());
 
-        TextView textViewMovieReleaseDate = (TextView)findViewById(R.id.textViewMovieReleaseDate);
+        TextView textViewMovieReleaseDate = (TextView) headerView.findViewById(R.id.textViewMovieReleaseDate);
         textViewMovieReleaseDate.setText(movie.getReleaseDate().toString());
+
+        ListView ListviewTrailerReviews = (ListView) findViewById(R.id.listviewTrailerReviews);
+        ListviewTrailerReviews.addHeaderView(headerView);
+        ListviewTrailerReviews.setAdapter(trailerReviewListAdapter);
+
+        ListviewTrailerReviews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TrailerReviewAdapterItem trailerReviewAdapterItem = trailerReviewListAdapter.getItem(position - 1);
+                if (trailerReviewAdapterItem.getType() == TrailerReviewEnum.TRAILER_ENUM) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + ((Trailer) trailerReviewAdapterItem).getKey())));
+                }
+            }
+        });
+
+        FetchDataTask reviewsTask = new FetchDataTask();
+        reviewsTask.setJsonHandler(new Review());
+        reviewsTask.execute(getReviewsUrl(movie.getId()));
+        try {
+            List<JsonHandler> reviews = reviewsTask.get();
+            trailerReviewListAdapter.clear();
+            for (JsonHandler jsonHandler : reviews) {
+                trailerReviewListAdapter.add((Review) jsonHandler);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+        FetchDataTask trailersTask = new FetchDataTask();
+        trailersTask.setJsonHandler(new Trailer());
+        trailersTask.execute(getTrailersUrl(movie.getId()));
+        try {
+            List<JsonHandler> trailers = trailersTask.get();
+            for (JsonHandler jsonHandler : trailers) {
+                trailerReviewListAdapter.add((Trailer) jsonHandler);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
     }
 
+    private String getTrailersUrl(int movieId) {
+        final String FORECAST_BASE_URL = "http://api.themoviedb.org/3/movie/" + movieId + "/videos";
+        final String APPID_PARAM = "api_key";
+        final String APPID_Value = "6e0ea97da6dc8c46962af05d7f806598";
+
+        Uri buildUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                .appendQueryParameter(APPID_PARAM, APPID_Value)
+                .build();
+
+        return buildUri.toString();
+    }
+
+    private String getReviewsUrl(int movieId) {
+        final String FORECAST_BASE_URL = "http://api.themoviedb.org/3/movie/" + movieId + "/reviews";
+        final String APPID_PARAM = "api_key";
+        final String APPID_Value = "6e0ea97da6dc8c46962af05d7f806598";
+
+        Uri buildUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                .appendQueryParameter(APPID_PARAM, APPID_Value)
+                .build();
+
+        return buildUri.toString();
+    }
 }
