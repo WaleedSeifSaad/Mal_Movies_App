@@ -101,6 +101,7 @@ public class DetailsActivity extends AppCompatActivity {
         trailersTask.execute(getTrailersUrl(movie.getId()));
         try {
             List<JsonHandler> trailers = trailersTask.get();
+            trailerReviewListAdapter.clear();
             for (JsonHandler jsonHandler : trailers) {
                 trailerReviewListAdapter.add((Trailer) jsonHandler);
             }
@@ -115,7 +116,6 @@ public class DetailsActivity extends AppCompatActivity {
         reviewsTask.execute(getReviewsUrl(movie.getId()));
         try {
             List<JsonHandler> reviews = reviewsTask.get();
-            trailerReviewListAdapter.clear();
             for (JsonHandler jsonHandler : reviews) {
                 trailerReviewListAdapter.add((Review) jsonHandler);
             }
