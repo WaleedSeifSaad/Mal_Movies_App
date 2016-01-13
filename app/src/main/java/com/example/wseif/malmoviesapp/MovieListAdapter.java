@@ -1,7 +1,6 @@
 package com.example.wseif.malmoviesapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,15 +89,15 @@ public class MovieListAdapter extends BaseAdapter {
         ImageView imageView = holder.imageView;
         Picasso.with(mContext).load(movieItem.getPosterPath()).into(imageView);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext,DetailsActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("Movie",movieItem);
-                mContext.startActivity(intent);
-            }
-        });
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(mContext,DetailsActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.putExtra("Movie",movieItem);
+//                mContext.startActivity(intent);
+//            }
+//        });
 
         // Return the View you just created
         return convertView;

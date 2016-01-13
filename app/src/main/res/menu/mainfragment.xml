@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/favorites_settings"
+        android:title="@string/favorites_movies"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/all_movies_settings"
+        android:title="@string/all_movies_settings"
+        app:showAsAction="never" />
+</menu>

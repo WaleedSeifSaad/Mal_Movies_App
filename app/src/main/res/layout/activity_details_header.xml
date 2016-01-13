@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
+
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
         android:text="@string/MovieOriginalTitle"
@@ -14,33 +12,27 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewMovieOriginalTitle"
         android:textSize="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentTop="true" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
+        android:layout_marginTop="20dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/favoritebutton"
-        android:id="@+id/imageViewFavoriteButton" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
-        android:adjustViewBounds="true"
+        android:layout_below="@+id/textViewMovieOriginalTitle"
         android:id="@+id/movieImage" />
 
     <TextView
-        android:text="@string/MovieOverview"
+        android:text="@string/MovieReleaseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewMovieOverview"
+        android:layout_marginTop="20dp"
+        android:id="@+id/textViewMovieReleaseDate"
         android:textSize="20dp"
-        android:layout_marginTop="46dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/textViewMovieOriginalTitle"
+        android:paddingLeft="10dp"
+        android:layout_toRightOf="@+id/movieImage" />
+
 
     <TextView
         android:text="@string/MovieVoteAverage"
@@ -48,18 +40,31 @@
         android:layout_height="wrap_content"
         android:id="@+id/textViewMovieVoteAverage"
         android:textSize="20dp"
-        android:layout_marginTop="46dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/textViewMovieReleaseDate"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:layout_toRightOf="@+id/movieImage" />
 
-    <TextView
-        android:text="@string/MovieReleaseDate"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textViewMovieReleaseDate"
-        android:textSize="20dp"
-        android:layout_marginTop="46dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="10dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/favoritebutton"
+        android:layout_toRightOf="@+id/movieImage"
+        android:layout_below="@+id/textViewMovieVoteAverage"
+        android:paddingLeft="10dp"
+        android:id="@+id/imageViewFavoriteButton" />
 
-</LinearLayout>
+
+    <TextView
+        android:text="@string/MovieOverview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewMovieOverview"
+        android:textSize="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/movieImage" />
+
+
+</RelativeLayout>
